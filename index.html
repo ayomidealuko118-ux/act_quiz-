@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MFM CF FUNAAB — Book of Acts Online Bible Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#F6EEDD;
+    --ink-dim:#CBB894;
+    --ink-faint:#9C8867;
+    --bg-0:#0E0704;
+    --bg-1:#1A0F08;
+    --bg-2:#0A0503;
+    --gold-1:#F6C976;
+    --gold-2:#D89A3F;
+    --gold-3:#8A4E1E;
+    --ember:#FF7A3D;
+    --card:rgba(35,22,13,0.55);
+    --card-border:rgba(246,201,118,0.18);
+    --danger:#E6503A;
+    --ok:#6FBF8B;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(246,201,118,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 110% 10%, rgba(255,122,61,0.10), transparent 55%),
+      radial-gradient(ellipse 1000px 700px at 50% 120%, rgba(138,78,30,0.20), transparent 60%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-2) 70%);
+    color:var(--ink);
+    font-family:'Manrope', system-ui, sans-serif;
+    min-height:100vh;
+    -webkit-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
+  }
+  ::selection{ background:transparent; }
+  .font-display{ font-family:'Fraunces', serif; }
+  .glass{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .gold-text{
+    background:linear-gradient(100deg, var(--gold-1), var(--gold-2) 55%, var(--ember));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .gold-btn{
+    background:linear-gradient(135deg, var(--gold-1), var(--gold-2) 60%, #B5651D);
+    color:#1A0F08;
+    font-weight:700;
+    box-shadow: 0 6px 24px rgba(216,154,63,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  .gold-btn:hover{ transform:translateY(-1px); filter:brightness(1.06); box-shadow: 0 10px 30px rgba(216,154,63,0.45); }
+  .gold-btn:active{ transform:translateY(0px) scale(0.98); }
+  .gold-btn:disabled{ opacity:.45; filter:grayscale(0.3); cursor:not-allowed; transform:none; }
+  .ghost-btn{
+    background:rgba(246,201,118,0.06);
+    border:1px solid rgba(246,201,118,0.25);
+    color:var(--ink-dim);
+    transition: all .15s ease;
+  }
+  .ghost-btn:hover{ background:rgba(246,201,118,0.12); color:var(--ink); }
+  .ghost-btn:disabled{ opacity:.35; cursor:not-allowed; }
+  .pill{ border-radius:999px; }
+  .flame-wrap{ position:relative; width:34px; height:34px; flex-shrink:0; }
+  .flame{
+    width:14px; height:20px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:linear-gradient(180deg, var(--gold-1), var(--ember) 60%, #B5401E);
+    position:absolute; left:50%; bottom:0; transform:translateX(-50%);
+    filter:drop-shadow(0 0 6px rgba(255,150,60,0.7));
+    animation: flicker 1.6s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes flicker{
+    0%,100%{ transform:translateX(-50%) scaleY(1) scaleX(1) rotate(0deg); }
+    25%{ transform:translateX(-50%) scaleY(1.08) scaleX(0.94) rotate(-2deg); }
+    50%{ transform:translateX(-50%) scaleY(0.94) scaleX(1.05) rotate(2deg); }
+    75%{ transform:translateX(-50%) scaleY(1.05) scaleX(0.96) rotate(-1deg); }
+  }
+  .radio-card{
+    border:1px solid rgba(246,201,118,0.16);
+    background:rgba(255,255,255,0.02);
+    transition: all .15s ease;
+    cursor:pointer;
+  }
+  .radio-card:hover{ border-color:rgba(246,201,118,0.4); background:rgba(246,201,118,0.05); }
+  .radio-card.selected{
+    border-color:var(--gold-1);
+    background:linear-gradient(90deg, rgba(246,201,118,0.14), rgba(246,201,118,0.04));
+    box-shadow: 0 0 0 1px rgba(246,201,118,0.4) inset;
+  }
+  .radio-dot{
+    width:18px; height:18px; border-radius:50%;
+    border:2px solid var(--ink-faint);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .radio-card.selected .radio-dot{ border-color:var(--gold-1); }
+  .radio-dot-inner{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--gold-1);
+    transform:scale(0);
+    transition:transform .12s ease;
+  }
+  .radio-card.selected .radio-dot-inner{ transform:scale(1); }
+  input[type=text], input[type=email], input[type=tel], textarea{
+    -webkit-user-select:text !important; user-select:text !important;
+  }
+  .progress-track{ background:rgba(255,255,255,0.06); }
+  .progress-fill{ background:linear-gradient(90deg, var(--gold-2), var(--gold-1), var(--ember)); transition: width .35s ease; }
+  .toast{
+    animation: slideDown .35s cubic-bezier(.2,.9,.3,1);
+  }
+  @keyframes slideDown{ from{ opacity:0; transform:translate(-50%,-16px);} to{opacity:1; transform:translate(-50%,0);} }
+  .fade-in{ animation: fadeIn .4s ease both; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .pulse-red{ animation: pulseRed 1s ease-in-out infinite; }
+  @keyframes pulseRed{ 0%,100%{ background-color:rgba(230,80,58,0.18);} 50%{ background-color:rgba(230,80,58,0.38);} }
+  .checkmark-circle{
+    width:84px; height:84px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, rgba(111,191,139,0.35), rgba(111,191,139,0.08));
+    border:1.5px solid rgba(111,191,139,0.5);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .rank-badge{
+    width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800; font-size:13px; flex-shrink:0;
+  }
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-thumb{ background:rgba(246,201,118,0.25); border-radius:99px; }
+  .light-leak{
+    position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background: repeating-linear-gradient(100deg, transparent 0 40px, rgba(246,201,118,0.02) 40px 41px);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flame, .toast, .fade-in, .pulse-red{ animation:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="light-leak"></div>
+<div id="app" class="relative z-10 min-h-screen flex flex-col items-center px-4 py-6 md:py-10"></div>
+
+<script>
+/* ============================================================
+   CONFIGURATION — edit these two lines if your event date/time
+   differs from what's set here.
+   ============================================================ */
+const CONFIG = {
+  QUIZ_WINDOW_START: new Date('2026-08-08T20:00:00'), // quiz becomes available
+  RESULTS_TIME:       new Date('2026-08-08T21:00:00'), // leaderboard unlocks
+  QUIZ_DURATION_SEC:  25 * 60,
+  MAX_WARNINGS: 3,
+  EVENT_LABEL: 'Saturday, August 8th, 2026'
+};
+
+/* ============================================================
+   QUESTION BANK
+   ============================================================ */
+const QUESTIONS = [
+{id:1, type:'mcq', q:'To whom was the book of Acts specially addressed?', options:['Theophilus','Titus','Luke','Timothy'], correct:'Theophilus'},
+{id:2, type:'mcq', q:'Which Psalm did Peter quote concerning Judas saying, "Let his habitation be desolate"?', options:['Psalm 23','Psalm 69','Psalm 91','Psalm 119'], correct:'Psalm 69'},
+{id:3, type:'mcq', q:'At what hour did Peter say the Disciples were not drunk?', options:['First hour','Third hour','Sixth hour','Ninth hour'], correct:'Third hour'},
+{id:4, type:'mcq', q:'People from which region were not listed among those present on the day of Pentecost?', options:['Cappadocia','Libya','Crete','Ethiopia'], correct:'Ethiopia'},
+{id:5, type:'mcq', q:'Who among the seven deacons was a proselyte from Antioch?', options:['Parmenas','Nicolas','Timon','Nicanor'], correct:'Nicolas'},
+{id:6, type:'mcq', q:'Stephen made mention that Moses was learned in all wisdom of…', options:['Babylon','Persia','Egypt','Greece'], correct:'Egypt'},
+{id:7, type:'mcq', q:'What Old Testament book was the Ethiopian eunuch reading before he encountered Philip?', options:['Jeremiah','Isaiah','Ezekiel','Psalms'], correct:'Isaiah'},
+{id:8, type:'mcq', q:'The disciples at Joppa sent for Peter because of the death of…', options:['Lydia','Dorcas','Rhoda','Eunice'], correct:'Dorcas'},
+{id:9, type:'mcq', q:'Cornelius belonged to which military unit?', options:['Roman Guard','Syrian army','Italian army','Israeli army'], correct:'Italian army'},
+{id:10, type:'mcq', q:'At Antioch, the disciples were first called…', options:['Saints','Believers','Christians','Brethren'], correct:'Christians'},
+{id:11, type:'mcq', q:'During Paul\'s prolonged night discourse at Troas, which individual fell from the third loft after being overcome by deep sleep, was taken up apparently dead, but was subsequently restored to life through Paul\'s intervention?', options:['Trophimus','Eutychus','Eutychius','Tychicus'], correct:'Eutychus'},
+{id:12, type:'mcq', q:'The men of Berea were considered more noble because they…', options:['Fasted often','Gave alms','Searched the scriptures','Prayed fervently all night'], correct:'Searched the scriptures'},
+{id:13, type:'mcq', q:'Are you a Berean Christian?', options:['Yes','No','I don\'t know','I have no idea about this'], correct:'Yes'},
+{id:14, type:'mcq', q:'Which philosopher groups disputed with Paul in Athens?', options:['Stoics and Epicureans','Pharisees and Sadducees','Cynics and Platonists','Scribes and lawyers'], correct:'Stoics and Epicureans'},
+{id:15, type:'mcq', q:'Which trade did Aquila and Priscilla share with Paul?', options:['Carpentry','Fishing','Tent making','Pottery'], correct:'Tent making'},
+{id:16, type:'mcq', q:'How many books of magic were burned at Ephesus, and what was their value?', options:['40,000 pieces of silver','50,000 pieces of silver','40,000 pieces of gold','50,000 pieces of gold'], correct:'50,000 pieces of silver'},
+{id:17, type:'mcq', q:'What was the original name of the field purchased with Judas\' reward?', options:['Aceldama','Potters\' field','Field of blood','None was stated'], correct:'Aceldama'},
+{id:18, type:'mcq', q:'At what hour did John and Peter go to the temple when they healed a lame man?', options:['Third hour','Sixth hour','Ninth hour','Twelfth hour'], correct:'Ninth hour'},
+{id:19, type:'mcq', q:'What was Dorcas\' name in Greek?', options:['Tabitha','Damaris','Eunice','Lydia'], correct:'Tabitha'},
+{id:20, type:'mcq', q:'How many sons of Sceva attempted to cast out demons?', options:['Five','Six','Seven','Eight'], correct:'Seven'},
+{id:21, type:'mcq', q:'What was Elymas the sorcerer\'s other name?', options:['Simon','Bar-Jesus','Magnus','Dr. Strange'], correct:'Bar-Jesus'},
+{id:22, type:'mcq', q:'"But those things which God had before shew by the mouth of his prophets, that Christ should suffer, he hath so fulfilled." This statement is found in…', options:['Acts 3:18','Acts 4:12','Acts 2:52','Acts 5:8'], correct:'Acts 3:18'},
+{id:23, type:'mcq', q:'How many individuals in Acts are recorded to be raised from the dead?', options:['Four','Three','Two','One'], correct:'Two'},
+{id:24, type:'mcq', q:'Acts 1:8 lists four geographical locations in order. Which option gives the correct sequence?', options:['Jerusalem—Samaria—Judea—Uttermost Part','Samaria—Judea—Jerusalem—Uttermost Part','Jerusalem—Judea—Samaria—Uttermost Part','Judea—Jerusalem—Uttermost Part—Samaria'], correct:'Jerusalem—Judea—Samaria—Uttermost Part'},
+{id:25, type:'mcq', q:'Which verse of the book of Acts contains this: "Repent ye therefore and be converted, that your sins may be blotted out when the time of refreshing shall come from the Lord"?', options:['Acts 3:19','Acts 3:7','Acts 4:2','Acts 10:39'], correct:'Acts 3:19'},
+{id:26, type:'mcq', q:'Who made this statement: "Silver and gold, have I none…"?', options:['Peter','Paul','John','Jude'], correct:'Peter'},
+{id:27, type:'mcq', q:'Complete the verse correctly — Acts 20:35 says: "It is more blessed to ___ than to receive."', options:['Labour','Serve','Love','Give'], correct:'Give'},
+{id:28, type:'mcq', q:'Whose speech in Acts contains the expression: "The Most High dwelleth not in temples made with hands"?', options:['Peter at Pentecost','James at Jerusalem','Paul at Mars\' Hill','Stephen'], correct:'Paul at Mars\' Hill'},
+{id:29, type:'mcq', q:'Who referred to Jesus as "Prince of Life"?', options:['Paul','Peter','Philip'], correct:'Peter'},
+{id:30, type:'mcq', q:'In Acts, who is called "son of consolation"?', options:['Peter','Silas','Barnabas','John'], correct:'Barnabas'},
+{id:31, type:'mcq', q:'Who made this statement: "Here is water, what doth hinder me to be baptized"?', options:['Cornelius','Ethiopian eunuch','Lydia','Crispus'], correct:'Ethiopian eunuch'},
+{id:32, type:'text', q:'Quote Acts 4:12.', correct:'Neither is there salvation in any other for there is none other name given among men whereby we must be saved'},
+{id:33, type:'mcq', q:'Which Roman official openly admitted that Paul had committed nothing worthy of death, yet still left him imprisoned to satisfy political interests?', options:['Gallio','Festus','Felix','Julius'], correct:'Felix'},
+{id:34, type:'text', q:'Quote Acts 4:20.', correct:'For we cannot but speak the things which we have seen and heard'},
+{id:35, type:'text', q:'Which verse of the book of Acts tells us where the Apostles were first called Christians?', correct:'Acts 11:26'},
+{id:36, type:'mcq', q:'In Paul\'s address at Mars\' Hill — one of the most intellectually profound statements in Acts — he referred to one of their own poets. Which statement below did Paul attribute to their poets?', options:['The just shall live by faith.','Having spoiled principalities and powers, he made an open show of them all.','Jesus nah winner man ooo, my Oga.','In him we live, and move, and have our being… for we are also his offspring.'], correct:'In him we live, and move, and have our being… for we are also his offspring.'},
+{id:37, type:'mcq', q:'Which Roman official made the following statement after hearing Paul\'s defense? "Almost thou persuadest me to be a Christian."', options:['Felix','Festus','King Agrippa','Claudius Lysias'], correct:'King Agrippa'},
+{id:38, type:'text', q:'Quote Acts 3:19.', correct:'Repent ye therefore and be converted that your sins may be blotted out when the times of refreshing shall come from the presence of the Lord'},
+{id:39, type:'mcq', q:'While defending the faith before the Jewish council, Stephen recounted Israel\'s history from Abraham to Solomon, including a statement concerning Moses\' education. Complete the statement: "And Moses was learned in all the wisdom of the Egyptians, and was mighty in ___."', options:['Wisdom and understanding','Works and miracles','Words and in deeds','Faith and patience'], correct:'Words and in deeds'},
+{id:40, type:'mcq', q:'During the violent storm on the voyage to Rome, Paul encouraged everyone aboard the ship. Which statement accurately summarises his message?', options:['Everybody would perish, but the cargo would survive.','The storm would immediately cease after the prayer.','There would be no loss of any man\'s life, though the ship itself would be lost.','They would return to Crete immediately.'], correct:'There would be no loss of any man\'s life, though the ship itself would be lost.'},
+{id:41, type:'text', q:'Quote Acts 1:8.', correct:'But ye shall receive power after that the Holy Ghost is come upon you and ye shall be witnesses unto me both in Jerusalem and in all Judea and in Samaria and unto the uttermost part of the earth'},
+{id:42, type:'mcq', q:'According to Acts 13, after the reading of the Law and the Prophets in the synagogue of Antioch in Pisidia, the rulers of the synagogue sent unto Paul and Barnabas saying:', options:['"Ye men and brethren, if ye have any word of exhortation for the people, say on."','"Come again next Sabbath."','"Declare unto us this new doctrine."','"Teach us concerning Jesus that we may know him."'], correct:'"Ye men and brethren, if ye have any word of exhortation for the people, say on."'},
+{id:43, type:'mcq', q:'Which of these statements concerning the final chapter of Acts is correct?', options:['Paul was immediately released and returned to Jerusalem.','Paul spent two whole years in his own hired house, receiving all who came to him and preaching the Kingdom of God with all confidence.','Paul wrote the Book of Acts from prison.','The Jews unanimously accepted Paul\'s message in Rome.'], correct:'Paul spent two whole years in his own hired house, receiving all who came to him and preaching the Kingdom of God with all confidence.'},
+{id:44, type:'mcq', q:'Which statement represents the first direct fulfillment quotation explicitly interpreted by an Apostle in Acts as having been fulfilled in their own day?', options:['Psalm 16 concerning Christ\'s resurrection','Joel\'s prophecy concerning the outpouring of the Spirit','Psalm 2 concerning the nations raging','Amos 9 concerning the rebuilding of David\'s tabernacle'], correct:'Joel\'s prophecy concerning the outpouring of the Spirit'},
+{id:45, type:'mcq', q:'Which of the following occurred in correct chronological order according to the Book of Acts?', options:['Saul\'s conversion — Stephen\'s death — Philip preaches in Samaria — Cornelius\' conversion.','Cornelius\' conversion — Saul\'s conversion — Philip preaches in Samaria — Stephen\'s death.','Stephen\'s death — Philip preaches in Samaria — Saul\'s conversion — Cornelius\' conversion.','Philip preaches in Samaria — Stephen\'s death — Saul\'s conversion — Cornelius\' conversion.'], correct:'Stephen\'s death — Philip preaches in Samaria — Saul\'s conversion — Cornelius\' conversion.'},
+{id:46, type:'mcq', q:'Which pair of individuals in Acts were specifically described as husband and wife who jointly explained the way of God more perfectly to Apollos?', options:['Philip and his daughters','Ananias and Sapphira','Barnabas and John Mark','Aquila and Priscilla'], correct:'Aquila and Priscilla'},
+{id:47, type:'mcq', q:'When the Apostles prayed after being threatened by the council, they did not ask God to remove persecution. According to Acts 4, they instead prayed:', options:['That with all boldness they might speak God\'s word, while He stretched forth His hand to heal.','That their enemies would perish immediately.','That they would escape from Jerusalem.','That angels would continually protect them from prison.'], correct:'That with all boldness they might speak God\'s word, while He stretched forth His hand to heal.'},
+{id:48, type:'mcq', q:'According to Acts 13, after the reading of the Law and the Prophets in the synagogue of Antioch in Pisidia, the rulers of the synagogue sent unto Paul and Barnabas saying:', options:['"Come again next Sabbath."','"Teach us concerning Jesus that we may know him, and it sufficeth us."','"Ye men and brethren, if ye have any word of exhortation for the people, say on."','"Declare unto us this new doctrine."'], correct:'"Ye men and brethren, if ye have any word of exhortation for the people, say on."'},
+{id:49, type:'mcq', q:'Paul described himself before the Ephesian elders using several expressions. Which of the following was NOT among his own description?', options:['Serving the Lord with all humility of mind.','Declaring the whole counsel of God.','Keeping back nothing that was profitable.','Never working with his own hands.'], correct:'Never working with his own hands.'},
+{id:50, type:'mcq', q:'Which of these statements concerning the final chapter of Acts is correct?', options:['Paul wrote the Book of Acts from prison.','Paul was immediately released and returned to Jerusalem.','Paul spent two whole years in his own hired house, receiving all who came to him and preaching the Kingdom of God with all confidence.','The Jews unanimously accepted Paul\'s message in Rome.'], correct:'Paul spent two whole years in his own hired house, receiving all who came to him and preaching the Kingdom of God with all confidence.'}
+];
+
+/* Mock leaderboard participants (for demo display alongside the real submitter) */
+const MOCK_PARTICIPANTS = [
+  {name:'Deborah Adeyemi', score:47},
+  {name:'Emmanuel Okon', score:45},
+  {name:'Grace Babatunde', score:44},
+  {name:'Samuel Ilori', score:43},
+  {name:'Faith Owolabi', score:41},
+  {name:'David Ogunleye', score:39},
+  {name:'Peace Nwachukwu', score:38},
+  {name:'Joseph Adebayo', score:36},
+  {name:'Ruth Fashina', score:34},
+  {name:'Michael Adeoye', score:31}
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const LS_KEY = 'mfmcf_acts_quiz_v1';
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveState(s){
+  localStorage.setItem(LS_KEY, JSON.stringify(s));
+}
+let state = loadState();
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function now(){ return new Date(); }
+function fmtClock(ms){
+  const total = Math.max(0, Math.floor(ms/1000));
+  const m = Math.floor(total/60).toString().padStart(2,'0');
+  const s = (total%60).toString().padStart(2,'0');
+  return m+':'+s;
+}
+function normalize(str){
+  return (str||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function textScore(answer, correct){
+  const a = normalize(answer);
+  const c = normalize(correct);
+  if(!a) return false;
+  if(a === c) return true;
+  const cWords = c.split(' ').filter(w=>w.length>3);
+  const aSet = new Set(a.split(' '));
+  let hits = 0;
+  cWords.forEach(w=>{ if(aSet.has(w)) hits++; });
+  return cWords.length>0 && (hits/cWords.length) >= 0.6;
+}
+function computeScore(){
+  let score = 0;
+  QUESTIONS.forEach(q=>{
+    const ans = (state.answers||{})[q.id];
+    if(!ans) return;
+    if(q.type==='mcq'){ if(ans===q.correct) score++; }
+    else { if(textScore(ans, q.correct)) score++; }
+  });
+  return score;
+}
+
+/* ============================================================
+   APP PHASE DETECTION
+   ============================================================ */
+function getPhase(){
+  const t = now();
+  if(state.submitted){
+    return t >= CONFIG.RESULTS_TIME ? 'results' : 'waiting';
+  }
+  if(t < CONFIG.QUIZ_WINDOW_START) return 'countdown';
+  if(t >= CONFIG.RESULTS_TIME) return 'missed_results';
+  if(state.quizStartTime){
+    const elapsed = t - new Date(state.quizStartTime);
+    if(elapsed >= CONFIG.QUIZ_DURATION_SEC*1000){
+      submitQuiz(true);
+      return 'waiting';
+    }
+    return 'quiz';
+  }
+  if(state.registered) return 'ready';
+  return 'register';
+}
+
+/* ============================================================
+   RENDER ROOT
+   ============================================================ */
+const app = document.getElementById('app');
+let tickHandle = null;
+let toastTimeout = null;
+
+function render(){
+  if(tickHandle){ clearInterval(tickHandle); tickHandle = null; }
+  const phase = getPhase();
+  app.innerHTML = '';
+  app.appendChild(header());
+  let body;
+  switch(phase){
+    case 'countdown': body = screenCountdown(); break;
+    case 'register': body = screenRegister(); break;
+    case 'ready': body = screenReady(); break;
+    case 'quiz': body = screenQuiz(); break;
+    case 'waiting': body = screenWaiting(); break;
+    case 'results': body = screenResults(); break;
+    case 'missed_results': body = screenResults(); break;
+    default: body = screenRegister();
+  }
+  app.appendChild(body);
+  app.appendChild(footer());
+}
+
+function header(){
+  const wrap = document.createElement('div');
+  wrap.className = 'w-full max-w-2xl flex flex-col items-center text-center mb-6 fade-in';
+  wrap.innerHTML = `
+    <div class="flex items-center gap-2 mb-3">
+      <div class="flame-wrap"><div class="flame"></div></div>
+      <span class="uppercase tracking-[0.2em] text-[11px] md:text-xs font-semibold gold-text">MFM CF FUNAAB Presents</span>
+    </div>
+    <h1 class="font-display text-3xl md:text-5xl font-semibold gold-text leading-tight">Online Bible Quiz</h1>
+    <p class="text-[13px] md:text-sm text-[var(--ink-dim)] mt-2 tracking-wide">Test your knowledge, strengthen your faith, win souls!</p>
+    <div class="mt-3 px-3 py-1 pill glass text-[11px] md:text-xs text-[var(--ink-dim)] font-medium">Book of Acts &middot; 50 Questions &middot; 25 Minutes</div>
+  `;
+  return wrap;
+}
+
+function footer(){
+  const f = document.createElement('div');
+  f.className = 'mt-10 text-[11px] text-[var(--ink-faint)] text-center pb-4';
+  f.textContent = '© 2026 MFM CF FUNAAB — All submissions are recorded securely.';
+  return f;
+}
+
+function card(innerHTML, extraClass){
+  const c = document.createElement('div');
+  c.className = 'glass rounded-3xl w-full max-w-2xl p-6 md:p-10 fade-in ' + (extraClass||'');
+  c.innerHTML = innerHTML;
+  return c;
+}
+
+/* ============================================================
+   SCREEN: COUNTDOWN
+   ============================================================ */
+function screenCountdown(){
+  const c = card(`
+    <div class="text-center">
+      <div class="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg, rgba(246,201,118,0.18), rgba(255,122,61,0.10)); border:1px solid rgba(246,201,118,0.25);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="#F6C976" stroke-width="1.6"/><path d="M12 9v4l3 2" stroke="#F6C976" stroke-width="1.6" stroke-linecap="round"/><path d="M9 2h6M12 2v2" stroke="#F6C976" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      <h2 class="font-display text-xl md:text-2xl mb-2">The quiz opens soon</h2>
+      <p class="text-sm text-[var(--ink-dim)] mb-8">Access unlocks ${CONFIG.EVENT_LABEL} at 8:00&nbsp;PM. Come back then to register and begin.</p>
+      <div id="cd-grid" class="grid grid-cols-4 gap-3 max-w-md mx-auto"></div>
+    </div>
+  `);
+  const grid = c.querySelector('#cd-grid');
+  function draw(){
+    const diff = CONFIG.QUIZ_WINDOW_START - now();
+    if(diff <= 0){ render(); return; }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    grid.innerHTML = [[d,'Days'],[h,'Hrs'],[m,'Min'],[s,'Sec']].map(([v,l])=>`
+      <div class="rounded-2xl py-4 px-2" style="background:rgba(255,255,255,0.03); border:1px solid rgba(246,201,118,0.12);">
+        <div class="font-display text-2xl md:text-3xl gold-text">${String(v).padStart(2,'0')}</div>
+        <div class="text-[10px] uppercase tracking-widest text-[var(--ink-faint)] mt-1">${l}</div>
+      </div>`).join('');
+  }
+  draw();
+  tickHandle = setInterval(draw, 1000);
+  return c;
+}
+
+/* ============================================================
+   SCREEN: REGISTER
+   ============================================================ */
+function screenRegister(){
+  const c = card(`
+    <h2 class="font-display text-xl md:text-2xl mb-1">Register to begin</h2>
+    <p class="text-sm text-[var(--ink-dim)] mb-6">Fill in your details accurately — this record will appear on the leaderboard.</p>
+    <form id="reg-form" class="space-y-4">
+      <div>
+        <label class="block text-xs uppercase tracking-wider text-[var(--ink-faint)] mb-1.5">Full Name</label>
+        <input required name="name" type="text" placeholder="e.g. John Adebayo" class="w-full rounded-xl px-4 py-3 bg-white/5 border border-white/10 focus:border-[var(--gold-1)] outline-none text-sm placeholder:text-[var(--ink-faint)]">
+      </div>
+      <div>
+        <label class="block text-xs uppercase tracking-wider text-[var(--ink-faint)] mb-1.5">Email Address</label>
+        <input required name="email" type="email" placeholder="you@example.com" class="w-full rounded-xl px-4 py-3 bg-white/5 border border-white/10 focus:border-[var(--gold-1)] outline-none text-sm placeholder:text-[var(--ink-faint)]">
+      </div>
+      <div>
+        <label class="block text-xs uppercase tracking-wider text-[var(--ink-faint)] mb-1.5">Phone Number / Department</label>
+        <input required name="phone" type="text" placeholder="e.g. 08012345678 / Microbiology" class="w-full rounded-xl px-4 py-3 bg-white/5 border border-white/10 focus:border-[var(--gold-1)] outline-none text-sm placeholder:text-[var(--ink-faint)]">
+      </div>
+
+      <div class="rounded-2xl p-4 mt-2" style="background:rgba(230,80,58,0.08); border:1px solid rgba(230,80,58,0.25);">
+        <p class="text-[13px] leading-relaxed text-[var(--ink-dim)]">
+          <span class="font-semibold text-[var(--ink)]">Before you begin:</span> this is a timed, single-attempt assessment — 50 questions, 25 minutes. Switching tabs or minimizing this window will be logged as a warning; 3 warnings trigger automatic submission. Right-click and text copying are disabled. Please stay on this screen for the full duration.
+        </p>
+      </div>
+
+      <button type="submit" class="gold-btn w-full rounded-xl py-3.5 pill text-sm mt-2">Start Quiz</button>
+    </form>
+  `);
+  c.querySelector('#reg-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    state.registered = true;
+    state.user = { name: fd.get('name').trim(), email: fd.get('email').trim(), phone: fd.get('phone').trim() };
+    state.warnings = 0;
+    state.answers = {};
+    saveState(state);
+    render();
+  });
+  return c;
+}
+
+/* ============================================================
+   SCREEN: READY (post-register, pre-start)
+   ============================================================ */
+function screenReady(){
+  const c = card(`
+    <div class="text-center">
+      <div class="checkmark-circle mx-auto mb-5">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#6FBF8B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="font-display text-xl md:text-2xl mb-2">Welcome, ${escapeHtml(state.user.name.split(' ')[0]||state.user.name)}</h2>
+      <p class="text-sm text-[var(--ink-dim)] mb-8">You're registered. When you click below, the 25-minute timer starts immediately and cannot be paused.</p>
+      <button id="begin-btn" class="gold-btn rounded-xl py-3.5 px-10 pill text-sm">Begin the 25-Minute Timer</button>
+    </div>
+  `);
+  c.querySelector('#begin-btn').addEventListener('click', ()=>{
+    state.quizStartTime = now().toISOString();
+    state.currentQ = 0;
+    saveState(state);
+    render();
+  });
+  return c;
+}
+
+/* ============================================================
+   SCREEN: QUIZ
+   ============================================================ */
+function screenQuiz(){
+  if(state.currentQ === undefined) state.currentQ = 0;
+  const idx = state.currentQ;
+  const q = QUESTIONS[idx];
+  const wrap = document.createElement('div');
+  wrap.className = 'w-full max-w-2xl fade-in';
+
+  // Sticky timer header
+  const timerBar = document.createElement('div');
+  timerBar.id = 'timer-bar';
+  timerBar.className = 'sticky top-2 z-20 glass rounded-2xl px-4 py-3 mb-4 flex items-center justify-between';
+  wrap.appendChild(timerBar);
+
+  const qCard = document.createElement('div');
+  qCard.className = 'glass rounded-3xl p-6 md:p-8';
+  wrap.appendChild(qCard);
+
+  function renderQuestion(){
+    const q = QUESTIONS[state.currentQ];
+    const savedAns = (state.answers||{})[q.id] || '';
+    const pct = Math.round(((state.currentQ)/QUESTIONS.length)*100);
+    qCard.innerHTML = `
+      <div class="mb-5">
+        <div class="flex items-center justify-between text-[11px] text-[var(--ink-faint)] mb-2 uppercase tracking-wider">
+          <span>Question ${state.currentQ+1} of ${QUESTIONS.length}</span>
+          <span>${pct}% complete</span>
+        </div>
+        <div class="progress-track h-1.5 rounded-full overflow-hidden">
+          <div class="progress-fill h-full rounded-full" style="width:${pct}%"></div>
+        </div>
+      </div>
+      <h3 class="font-display text-lg md:text-xl leading-snug mb-6">${escapeHtml(q.q)}</h3>
+      <div id="answer-zone" class="space-y-3"></div>
+      <div class="flex items-center gap-3 mt-8">
+        <button id="prev-btn" class="ghost-btn rounded-xl py-3 px-5 pill text-sm flex-1" ${state.currentQ===0?'disabled':''}>Previous</button>
+        ${state.currentQ === QUESTIONS.length-1
+          ? `<button id="submit-btn" class="gold-btn rounded-xl py-3 px-5 pill text-sm flex-[2]">Submit Quiz</button>`
+          : `<button id="next-btn" class="gold-btn rounded-xl py-3 px-5 pill text-sm flex-[2]">Next</button>`
+        }
+      </div>
+    `;
+    const zone = qCard.querySelector('#answer-zone');
+    if(q.type === 'mcq'){
+      q.options.forEach(opt=>{
+        const row = document.createElement('div');
+        row.className = 'radio-card rounded-xl px-4 py-3.5 flex items-center gap-3' + (savedAns===opt ? ' selected':'');
+        row.innerHTML = `<div class="radio-dot"><div class="radio-dot-inner"></div></div><span class="text-sm leading-snug">${escapeHtml(opt)}</span>`;
+        row.addEventListener('click', ()=>{
+          state.answers[q.id] = opt;
+          saveState(state);
+          zone.querySelectorAll('.radio-card').forEach(r=>r.classList.remove('selected'));
+          row.classList.add('selected');
+        });
+        zone.appendChild(row);
+      });
+    } else {
+      zone.innerHTML = `<textarea id="text-ans" rows="4" placeholder="Type the scripture as accurately as you can recall it…" class="w-full rounded-xl px-4 py-3 bg-white/5 border border-white/10 focus:border-[var(--gold-1)] outline-none text-sm placeholder:text-[var(--ink-faint)] resize-none">${escapeHtml(savedAns)}</textarea>`;
+      const ta = zone.querySelector('#text-ans');
+      ta.addEventListener('input', ()=>{ state.answers[q.id] = ta.value; saveState(state); });
+    }
+    qCard.querySelector('#prev-btn').addEventListener('click', ()=>{
+      if(state.currentQ>0){ state.currentQ--; saveState(state); renderQuestion(); window.scrollTo({top:0,behavior:'smooth'}); }
+    });
+    const nextBtn = qCard.querySelector('#next-btn');
+    if(nextBtn) nextBtn.addEventListener('click', ()=>{
+      state.currentQ++; saveState(state); renderQuestion(); window.scrollTo({top:0,behavior:'smooth'});
+    });
+    const submitBtn = qCard.querySelector('#submit-btn');
+    if(submitBtn) submitBtn.addEventListener('click', ()=>{ submitQuiz(false); });
+  }
+  renderQuestion();
+
+  function renderTimer(){
+    const startT = new Date(state.quizStartTime);
+    const elapsed = now() - startT;
+    const remaining = CONFIG.QUIZ_DURATION_SEC*1000 - elapsed;
+    if(remaining <= 0){ submitQuiz(true); return; }
+    const secsLeft = remaining/1000;
+    let colorClass = 'text-[var(--ok)]';
+    let barBg = 'background:rgba(111,191,139,0.14); border-color:rgba(111,191,139,0.3);';
+    if(secsLeft < 180){ colorClass='text-[var(--danger)]'; }
+    else if(secsLeft < 600){ colorClass='text-[var(--gold-1)]'; barBg='background:rgba(246,201,118,0.12); border-color:rgba(246,201,118,0.3);'; }
+    timerBar.style.cssText = barBg;
+    timerBar.classList.toggle('pulse-red', secsLeft < 180);
+    timerBar.innerHTML = `
+      <div class="flex items-center gap-2 text-xs text-[var(--ink-dim)]">
+        <div class="flame-wrap" style="width:22px;height:22px;"><div class="flame" style="animation-duration:${secsLeft<180?'0.6s':'1.6s'}"></div></div>
+        Warnings: <span class="font-semibold ${state.warnings>0?'text-[var(--danger)]':'text-[var(--ink)]'}">${state.warnings||0}/${CONFIG.MAX_WARNINGS}</span>
+      </div>
+      <div class="font-display text-xl md:text-2xl font-semibold ${colorClass}">${fmtClock(remaining)}</div>
+    `;
+  }
+  renderTimer();
+  tickHandle = setInterval(renderTimer, 1000);
+
+  return wrap;
+}
+
+function submitQuiz(auto){
+  if(state.submitted) return;
+  state.submitted = true;
+  state.submittedAt = now().toISOString();
+  state.autoSubmitted = !!auto;
+  state.score = computeScore();
+  saveState(state);
+  render();
+}
+
+/* ============================================================
+   SCREEN: WAITING
+   ============================================================ */
+function screenWaiting(){
+  const flagged = state.flagged ? `<div class="mt-4 text-[11px] text-[var(--danger)] uppercase tracking-wider">This submission was flagged for review</div>` : '';
+  const c = card(`
+    <div class="text-center">
+      <div class="checkmark-circle mx-auto mb-5">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#6FBF8B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="font-display text-xl md:text-2xl mb-2">Submission received!</h2>
+      <p class="text-sm text-[var(--ink-dim)] leading-relaxed">Your submission has been securely recorded. Official results and the leaderboard will be released on this page at exactly <span class="text-[var(--ink)] font-semibold">9:00 PM</span>.</p>
+      ${flagged}
+      <div id="wait-cd" class="mt-8 flex items-center justify-center gap-2 text-[13px] text-[var(--ink-faint)]"></div>
+    </div>
+  `);
+  const cd = c.querySelector('#wait-cd');
+  function draw(){
+    const diff = CONFIG.RESULTS_TIME - now();
+    if(diff <= 0){ render(); return; }
+    cd.innerHTML = `Results unlock in <span class="text-[var(--gold-1)] font-semibold">${fmtClock(diff)}</span>`;
+  }
+  draw();
+  tickHandle = setInterval(draw, 1000);
+  return c;
+}
+
+/* ============================================================
+   SCREEN: RESULTS / LEADERBOARD
+   ============================================================ */
+function screenResults(){
+  const participated = !!state.submitted;
+  const myScore = participated ? state.score : null;
+  const total = QUESTIONS.length;
+  const pct = participated ? Math.round((myScore/total)*100) : null;
+
+  let board = MOCK_PARTICIPANTS.map(p=>({name:p.name, score:p.score, isMe:false}));
+  if(participated){
+    board.push({name: state.user.name + ' (You)', score: myScore, isMe:true});
+  }
+  board.sort((a,b)=> b.score - a.score);
+
+  const rowsHtml = board.map((p, i)=>{
+    const rank = i+1;
+    let badgeStyle = 'background:rgba(255,255,255,0.06); color:var(--ink-dim);';
+    if(rank===1) badgeStyle = 'background:linear-gradient(135deg,#F6C976,#D89A3F); color:#1A0F08;';
+    else if(rank===2) badgeStyle = 'background:rgba(220,220,220,0.25); color:#F6EEDD;';
+    else if(rank===3) badgeStyle = 'background:rgba(205,127,50,0.35); color:#F6EEDD;';
+    return `
+      <div class="flex items-center gap-3 py-3 px-3 rounded-xl ${p.isMe?'ring-1 ring-[var(--gold-1)]':''}" style="${p.isMe?'background:rgba(246,201,118,0.08);':''}">
+        <div class="rank-badge" style="${badgeStyle}">${rank}</div>
+        <div class="flex-1 text-sm ${p.isMe?'font-semibold text-[var(--ink)]':'text-[var(--ink-dim)]'}">${escapeHtml(p.name)}</div>
+        <div class="text-sm font-semibold ${p.isMe?'gold-text':'text-[var(--ink-dim)]'}">${p.score}/${total}</div>
+      </div>`;
+  }).join('');
+
+  const summaryHtml = participated ? `
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.03); border:1px solid rgba(246,201,118,0.12);">
+        <div class="font-display text-3xl gold-text">${myScore}/${total}</div>
+        <div class="text-[10px] uppercase tracking-widest text-[var(--ink-faint)] mt-1">Your Score</div>
+      </div>
+      <div class="rounded-2xl p-4 text-center" style="background:rgba(255,255,255,0.03); border:1px solid rgba(246,201,118,0.12);">
+        <div class="font-display text-3xl gold-text">${pct}%</div>
+        <div class="text-[10px] uppercase tracking-widest text-[var(--ink-faint)] mt-1">Percentage</div>
+      </div>
+    </div>
+  ` : `
+    <div class="rounded-2xl p-4 text-center mb-6" style="background:rgba(230,80,58,0.08); border:1px solid rgba(230,80,58,0.25);">
+      <p class="text-sm text-[var(--ink-dim)]">You did not submit an entry for this quiz window.</p>
+    </div>
+  `;
+
+  const c = card(`
+    <h2 class="font-display text-xl md:text-2xl mb-1 text-center">Results &amp; Leaderboard</h2>
+    <p class="text-sm text-[var(--ink-dim)] mb-6 text-center">Live standings — Book of Acts Online Bible Quiz</p>
+    ${summaryHtml}
+    <div class="space-y-1.5">${rowsHtml}</div>
+  `);
+  return c;
+}
+
+/* ============================================================
+   UTIL
+   ============================================================ */
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function showToast(msg, danger){
+  const existing = document.getElementById('toast-el');
+  if(existing) existing.remove();
+  const t = document.createElement('div');
+  t.id = 'toast-el';
+  t.className = 'toast fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl glass text-sm font-medium max-w-[90vw] text-center';
+  t.style.borderColor = danger ? 'rgba(230,80,58,0.5)' : 'rgba(246,201,118,0.3)';
+  t.style.color = danger ? '#F6D9D2' : 'var(--ink)';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(()=>{ t.remove(); }, 3200);
+}
+
+/* ============================================================
+   PROCTORING / SECURITY
+   ============================================================ */
+function isQuizActive(){
+  return getPhase() === 'quiz';
+}
+function registerWarning(reason){
+  if(!isQuizActive() || state.submitted) return;
+  state.warnings = (state.warnings||0) + 1;
+  saveState(state);
+  if(state.warnings >= CONFIG.MAX_WARNINGS){
+    state.flagged = true;
+    showToast('Maximum warnings reached — quiz submitted automatically.', true);
+    submitQuiz(true);
+  } else {
+    showToast(`Warning ${state.warnings}/${CONFIG.MAX_WARNINGS}: Tab switching or window minimizing is prohibited!`, true);
+  }
+}
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden) registerWarning('visibility');
+});
+window.addEventListener('blur', ()=> registerWarning('blur'));
+
+document.addEventListener('contextmenu', e => { if(isQuizActive()||true) e.preventDefault(); });
+document.addEventListener('selectstart', e => {
+  const tag = (e.target && e.target.tagName) || '';
+  if(tag === 'TEXTAREA' || tag === 'INPUT') return;
+  e.preventDefault();
+});
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('paste', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  const k = e.key ? e.key.toLowerCase() : '';
+  const blockedCombo = (e.ctrlKey || e.metaKey) && ['c','v','u','x','s','p'].includes(k);
+  const blockedShiftI = (e.ctrlKey || e.metaKey) && e.shiftKey && k === 'i';
+  if(blockedCombo || blockedShiftI || k === 'f12'){
+    e.preventDefault();
+  }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+setInterval(()=>{
+  // Periodic phase re-check to catch window boundaries even when no other timer is active
+  const p = getPhase();
+  if(app.dataset.phase !== p){
+    app.dataset.phase = p;
+    render();
+  }
+}, 5000);
+</script>
+</body>
+</html>
